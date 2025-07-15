@@ -1,2 +1,1 @@
-# React-Wordle-ts
-React-Wordle ts version
+# React-Wordle ts version
