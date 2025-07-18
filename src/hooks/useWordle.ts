@@ -19,7 +19,7 @@ const useWordle = (solution: string): UseWordleReturn => {
   const [turn, setTurn] = useState<number>(0)
   const [currentGuess, setCurrentGuess] = useState<string>('')
   const [guesses, setGuesses] = useState<LetterObject[][]>([]) // each guess is an array
-  const [history, setHistory] = useState<string[]>(["hello", "ninja"]) // each guess is a string
+  const [history, setHistory] = useState<string[]>([]) // each guess is a string
   const [isCorrect, setIsCorrect] = useState<boolean>(false)
 
   // format a guess into an array of letter objects 
@@ -55,8 +55,21 @@ const useWordle = (solution: string): UseWordleReturn => {
   // add a new guess to the guesses state
   // update the isCorrect state if the guess is correct
   // add one to the turn state
-  const addNewGuess = () => {
-    // TODO: 实现添加新猜测逻辑
+  const addNewGuess = (formattedGuess: LetterObject[]) => {
+    if (currentGuess === solution) {
+      setIsCorrect(true)
+    } 
+    // console.log('adding new guess: ', formattedGuess)
+    setGuesses(prevGuesses => [
+      ...prevGuesses,
+      formattedGuess
+    ])
+    setHistory(prevHistory => [
+      ...prevHistory,
+      currentGuess
+    ])
+    setCurrentGuess('')
+    setTurn(prevTurn => prevTurn + 1)
   }
 
   // handle keyup event & track current guess
@@ -80,7 +93,8 @@ const useWordle = (solution: string): UseWordleReturn => {
       }
 
       const formatted = formatGuess()
-      console.log('formatted guess: ', formatted)
+      addNewGuess(formatted)
+      // console.log('formatted guess: ', formatted)
     }
 
     if (key === 'Backspace') {
