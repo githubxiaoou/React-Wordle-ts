@@ -22,7 +22,7 @@ export const Row = ({ guess, currentGuess }: RowProps) => {
     return (
       <div className="row current">
         {letters.map((letter, index) => {
-          return <div key={index} className="current">{letter}</div>
+          return <div key={index} className="filled">{letter}</div>
         })}
 
         {/* Fill the rest of the row with empty divs */}
