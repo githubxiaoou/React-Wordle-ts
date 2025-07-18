@@ -2,12 +2,12 @@ import { useState } from 'react'
 
 type LetterColor = 'green' | 'yellow' | 'grey'
 
-type LetterObject = {
+export type LetterObject = {
   key: string
   color: LetterColor
 }
 
-type UseWordleReturn = {
+export type UseWordleReturn = {
   turn: number
   currentGuess: string
   guesses: LetterObject[][]
@@ -18,7 +18,7 @@ type UseWordleReturn = {
 const useWordle = (solution: string): UseWordleReturn => {
   const [turn, setTurn] = useState<number>(0)
   const [currentGuess, setCurrentGuess] = useState<string>('')
-  const [guesses, setGuesses] = useState<LetterObject[][]>([]) // each guess is an array
+  const [guesses, setGuesses] = useState<LetterObject[][]>([...Array(6)]) // each guess is an array
   const [history, setHistory] = useState<string[]>([]) // each guess is a string
   const [isCorrect, setIsCorrect] = useState<boolean>(false)
 
@@ -60,10 +60,11 @@ const useWordle = (solution: string): UseWordleReturn => {
       setIsCorrect(true)
     } 
     // console.log('adding new guess: ', formattedGuess)
-    setGuesses(prevGuesses => [
-      ...prevGuesses,
-      formattedGuess
-    ])
+    setGuesses(prevGuesses => {
+      let newGuesses = [...prevGuesses]
+      newGuesses[turn] = formattedGuess
+      return newGuesses
+    })
     setHistory(prevHistory => [
       ...prevHistory,
       currentGuess
