@@ -10,7 +10,7 @@ export const Keypad = ({ usedKeys }: KeypadProps) => {
 
   useEffect(() => {
     const fetchLetters = async () => {
-      const response = await fetch("/mock/db.json");
+      const response = await fetch(import.meta.env.BASE_URL + "mock/db.json");
       const data = await response.json();
       setLetters(data.letters.map((letter: { key: string }) => letter.key));
     };

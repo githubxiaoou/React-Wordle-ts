@@ -8,7 +8,7 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('/mock/db.json')
+      const response = await fetch(import.meta.env.BASE_URL + 'mock/db.json')
       const data = await response.json()
       const solutions = data.solutions
       const randomIndex = Math.floor(Math.random() * solutions.length)
