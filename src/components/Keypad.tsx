@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
+import type { LetterColor } from "../hooks/useWordle";
 
-export const Keypad = () => {
+type KeypadProps = {
+  usedKeys: { [key: string]: LetterColor }; // to track used keys and their colors
+};
+
+export const Keypad = ({ usedKeys }: KeypadProps) => {
   const [letters, setLetters] = useState<string[]>([]);
 
   useEffect(() => {
@@ -16,7 +21,14 @@ export const Keypad = () => {
   return (
     <div className="keypad">
       {letters &&
-        letters.map((letter, index) => <div key={index}>{letter}</div>)}
+        letters.map((letter, index) => {
+          const color = usedKeys[letter];
+          return (
+            <div key={index} className={color}>
+              {letter}
+            </div>
+          );
+        })}
     </div>
   );
 };

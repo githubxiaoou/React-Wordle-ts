@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-type LetterColor = 'green' | 'yellow' | 'grey'
+export type LetterColor = 'green' | 'yellow' | 'grey'
 
 export type LetterObject = {
   key: string
@@ -13,6 +13,7 @@ export type UseWordleReturn = {
   guesses: LetterObject[][]
   isCorrect: boolean
   handleKeyup: (event: KeyboardEvent) => void
+  usedKeys: { [key: string]: LetterColor } // to track used keys and their colors
 }
 
 const useWordle = (solution: string): UseWordleReturn => {
@@ -21,6 +22,7 @@ const useWordle = (solution: string): UseWordleReturn => {
   const [guesses, setGuesses] = useState<LetterObject[][]>([...Array(6)]) // each guess is an array
   const [history, setHistory] = useState<string[]>([]) // each guess is a string
   const [isCorrect, setIsCorrect] = useState<boolean>(false)
+  const [usedKeys, setUsedKeys] = useState<{ [key: string]: LetterColor }>({}) // {a: 'green', b: 'yellow', ...} to track used keys and their colors
 
   // format a guess into an array of letter objects 
   // e.g. [{key: 'a', color: 'yellow'}]
@@ -69,6 +71,30 @@ const useWordle = (solution: string): UseWordleReturn => {
       ...prevHistory,
       currentGuess
     ])
+    setUsedKeys(prevUsedKeys => {
+      formattedGuess.forEach(letterObject => {
+        // get current color of the letter
+        const currentColor = prevUsedKeys[letterObject.key]
+
+        // if the letter is green, set it to green
+        if (letterObject.color === 'green') {
+          prevUsedKeys[letterObject.key] = 'green'
+          return
+        }
+
+        // if the leter is yellow and current color is not green, set it to yellow
+        if (letterObject.color === 'yellow' && currentColor !== 'green') {
+          prevUsedKeys[letterObject.key] = 'yellow'
+          return
+        }
+        // if the letter is grey and current color is not green or yellow, set it to grey
+        if (letterObject.color === 'grey' && currentColor !== 'green' && currentColor !== 'yellow') {
+          prevUsedKeys[letterObject.key] = 'grey'
+          return
+        }
+      })
+      return prevUsedKeys
+    })
     setCurrentGuess('')
     setTurn(prevTurn => prevTurn + 1)
   }
@@ -111,7 +137,7 @@ const useWordle = (solution: string): UseWordleReturn => {
     }
   }
 
-  return { turn, currentGuess, guesses, isCorrect, handleKeyup }
+  return { turn, currentGuess, guesses, isCorrect, handleKeyup, usedKeys }
 }
 
 export default useWordle
