@@ -33,12 +33,12 @@ export default function Wordle({ solution }: { solution: string }) {
 
   useEffect(() => {
     // test
-    // console.log(guesses, turn, isCorrect);
+    console.log(guesses, turn, isCorrect, solution);
   }, [guesses, turn, isCorrect]);
 
   return (
     <div>
-      <div>Current Guess: {currentGuess}</div>
+      {/* <div>Current Guess: {currentGuess}</div> */}
       <Grid guesses={guesses} currentGuess={currentGuess} turn={turn} />
       <Keypad usedKeys={usedKeys} />
       {gameOver && (

@@ -22,7 +22,7 @@ function App() {
     <div className="App">
       <h1>Wordle(Lingo)</h1>
       {!solution && <div>Loading...</div>}
-      {solution && <div>Solution: {solution}</div>}
+      {/* {solution && <div>Solution: {solution}</div>} */}
       {/* Render the Wordle component only if solution is available */}
       {solution && <Wordle solution={solution} />}
     </div>
