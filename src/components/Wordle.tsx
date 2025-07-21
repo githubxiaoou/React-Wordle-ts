@@ -10,13 +10,24 @@ export default function Wordle({ solution }: { solution: string }) {
   useEffect(() => {
     window.addEventListener("keyup", handleKeyup);
 
+    if (isCorrect) {
+      console.log("Congratulations! You've guessed the word!");
+      window.removeEventListener("keyup", handleKeyup);
+    }
+
+    if (turn >= 6 && !isCorrect) {
+      console.log("Game over! The correct word was: " + solution);
+      window.removeEventListener("keyup", handleKeyup);
+    }
+
     return () => {
       window.removeEventListener("keyup", handleKeyup);
     };
   }, [handleKeyup]);
 
   useEffect(() => {
-    console.log(guesses, turn, isCorrect);
+    // test 
+    // console.log(guesses, turn, isCorrect);
   }, [guesses, turn, isCorrect]);
 
   return (
