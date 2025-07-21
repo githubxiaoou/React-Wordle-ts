@@ -8,10 +8,11 @@ function App() {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch('http://localhost:3000/solutions')
+      const response = await fetch('/mock/db.json')
       const data = await response.json()
-      const randomIndex = Math.floor(Math.random() * data.length)
-      setSolution(data[randomIndex].word)
+      const solutions = data.solutions
+      const randomIndex = Math.floor(Math.random() * solutions.length)
+      setSolution(solutions[randomIndex].word)
     }
 
     fetchData()
